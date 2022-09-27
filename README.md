@@ -8,15 +8,11 @@ An extremely modular, and fairly sophisticated desktop virtual assistant written
 
 The primary response engine of Friday, SBRE implements python programs written in a specific format (inheriting from a Skill class) as "Skills" that it can perform based on command triggers from the user. A skill may be something as simple as telling the assistant to flip a coin to something complex as a password manager or an AI image enhancer. There are a few skills already defined:
 
-<details>
-  <summary>Skills</summary>
 | Skill | Description | Example |
 | --- | --- | --- |
 | Coin Toss | Toss a coin and get the outcome. | "Flip a coin" |
 | Dice Roll | Roll a dice and get the outcome. | "Roll a dice" |
 | Date/Time | Get information about date/time. | "What's the time?" |
-  
-</details>
 
 ### **Driver / Interface**
 
