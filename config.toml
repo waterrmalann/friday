@@ -1,0 +1,54 @@
+[assistant]
+name = "Friday"
+version = "3.0.0"
+
+# The flavour is technically the equivalent of the assistant's gender.
+# Doesn't make much of a difference other than the voice and color theme.
+# cherry: Female | orange: Male | peach: Undefined
+flavour = "cherry"
+
+[developer]
+# Developer mode exposes internal functionality such as the ability to execute slash commands.
+# It is also sort of a "Debug Mode" as logging is more detailed.
+developer_mode = false
+
+# Prefix for commands. '/' by default.
+prefix = '/'
+
+[engine]
+# Allow multiple response engines to be loaded at once.
+allow_multiple_engines = true
+
+    [engine.sre] 
+    type = 'Response Engine'
+
+    [engine.sbre]
+    type = 'Response Engine'
+
+    # We need a minimum confidence cut off to filter out inaccurate results.
+    # The higher the cut off, the more accurate the assistant will be.
+    # However, it may result in the failure of activation of skills even when the input may be right.
+    # So a sweet spot needs to be decided based on the skills that are loaded.
+    accuracy = 0.5
+
+    # Whether active skills should be loaded by the assistant.
+    # Active skills can only perform actions with a explicit command from the user.
+    load_active_skills = true
+    # Maximum number of active skills that can be loaded at any given time.
+    # The higher the number, the more processing power and memory is required to handle the assistant.
+    max_active_skills = 128
+
+    # Whether passive skills should be loaded by the assistant.
+    # Passive skills run in the background and performs actions with or without being instructed by the user.
+    load_passive_skills = false
+    # Maximum number of passive skills that can be loaded at any given time.
+    # The higher the number, the more processing power and memory is required to handle the assistant.
+    max_passive_skills = 64
+
+    # The maximum number of skill files that can be loaded at any given time.
+    # The higher the number, the more processing power and memory is required to handle the assistant.
+    max_skills = 128
+
+    # Allow multiple skills to be activated from a single command.
+    # These skills then give outputs consecutively, individually.
+    allow_multi_activation = true
