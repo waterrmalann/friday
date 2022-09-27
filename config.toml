@@ -51,4 +51,4 @@ allow_multiple_engines = true
 
     # Allow multiple skills to be activated from a single command.
     # These skills then give outputs consecutively, individually.
-    allow_multi_activation = true
+    allow_multi_activation = false
