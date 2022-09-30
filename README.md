@@ -4,7 +4,7 @@
 
 ---
 
-An extremely modular, and fairly sophisticated desktop virtual assistant written in pure Python. Uses a plugin architecture where pretty much every part of the assistant is an individual component that can be written in any way as long as it plugs into the core assistant.
+An extremely versatile, modular, and sophisticated desktop virtual assistant written in pure Python. Uses a plugin architecture where pretty much every part of the assistant is an individual component that can be written in any way as long as it plugs into the core assistant. The name originates from the term "man/girl Friday", meaning go-to person and is heavily inspired by the [replacement virtual assistant](https://marvelcinematicuniverse.fandom.com/wiki/F.R.I.D.A.Y.) created by Tony Stark (Iron Man).
 
 The primary response engine of Friday, SBRE implements python programs written in a specific format (inheriting from a Skill class) as "Skills" that it can perform based on command triggers from the user. A skill may be something as simple as telling the assistant to flip a coin to something complex as a password manager or an AI image enhancer. There are a few skills already defined:
 
