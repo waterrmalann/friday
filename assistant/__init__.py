@@ -1,7 +1,9 @@
 import os
-from assistant.datatypes.message import Message
-from assistant.engines import SRE, SBRE
 import logging
+
+from assistant.components.interpreter import IntentInterpreter
+from assistant.handlers.command_handler import CommandHandler
+from assistant.handlers.request_handler import RequestHandler
 
 class Assistant:
     def __init__(self, name, config, log_handler=None):
@@ -27,22 +29,24 @@ class Assistant:
 
         self.memory = []
 
-        # Skill-Based Response Engine (SBRE) is the modular and extendable response engine.
-        self.engine = SBRE.SkillBasedResponseEngine(self)
-        # self.engine = SRE.SimpletonResponseEngine(self)
+        self.interpreter = IntentInterpreter(self)
+        # Note: The order in which the handlers are attached is important as some handlers may practically accept anything.
+
+        cmd_handler = CommandHandler(self.interpreter)
+        #cmd_handler.register_command()
+        self.interpreter.attach_handler(CommandHandler(self.interpreter))
+        self.interpreter.attach_handler(RequestHandler(self.interpreter))
 
         self.logger.info("Assistant Initialized")
 
     def process(self, msg):
-        """Processes input obtained from the user into something the assistant can understand and returns a result."""
+        """Pipe user input to the intent interpreter."""
+
+        response = self.interpreter.process(msg)
         
-        # Process the user input.
-        processed = Message(msg)
-
-        # Pass it to the active engine.
-        response = self.engine(processed)
-
         self.logger.info(f"User: {msg}")
         self.logger.info(f"{self.name}: {response.content}")
 
         return response.content
+
+# assistant.interpreter.handlers['CommandHandler'].register_command = 
