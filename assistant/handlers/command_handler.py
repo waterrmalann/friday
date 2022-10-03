@@ -1,3 +1,4 @@
+from assistant.handlers import Handler
 from assistant.datatypes.response import Response
 
 class Command:
@@ -19,55 +20,35 @@ class Command:
     def __repr__(self):
         return self.command_name
 
-class CommandHandler:
+class CommandHandler(Handler):
     
-    def __init__(self, interpreter, config):
-        
-        # Contains only the prefix for now.
-        self.config = config
-        
-        # Get the instance of the intent interpreter.
-        self.interpreter = interpreter
+    def __init__(self, command: callable, aliases: tuple):
+        super().__init__("Command Handler")
 
-        # Get the instance of the assistant.
-        self.assistant = interpreter.assistant
+        # The command function that's called.
+        self.command = command
 
-        # Get the instance of the logger.
-        self.logger = self.assistant.logger
-
-        # Commands available to the command handler.
-        self.commands = []
-    
-    def register_command(self, command, aliases):
-        """Register a command with the handler."""
-
-        self.commands.append((command, aliases))
-
-    def unregister_command(self, command):
-        """Unregister a command from the handler by command name, aliases, or function."""
-
-        indx = None
-        for i, cmd in enumerate(self.commands):
-            if (command == cmd[0].__name__) or (command == cmd[0]) or (command in cmd[1]):
-                indx = i
-                break
-        if indx is not None:
-            self.commands.pop(indx)
-        else:
-            pass
-            # raise CommandHandlerError('command is not registered')
+        # Various names for the command.
+        self.aliases = aliases + (command.__name__, )
 
     def handle(self, message):
-        command = Command(message)
+        """Handle the input."""
 
-        for i, cmd in enumerate(self.commands):
-            if (command.command_name == cmd[0].__name__) or (command.command_name in cmd[1]):
-                return cmd[0](*command.args)  # call the command using the arguments
-        else:
-            return Response('NOT-OK', "Unknown Command")
+        cmd = Command(message)
+        
+        try:
+            ran = self.command(self.assistant, *cmd.args)
+            return Response('OK', str(ran))
+        except Exception as ex:
+            return Response('NOT-OK', str(ex))
     
     def check(self, message):
-        if message.strip().startswith(self.assistant.config['developer']['prefix']):
+        """Check if this is the right handler for the job."""
+
+        #if message.strip().startswith(self.assistant.config['developer']['prefix']):
+
+        # fixme: fix this hack job
+        if message.strip()[1:].startswith(self.aliases):
             return True
         else:
             return False
