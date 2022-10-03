@@ -16,6 +16,14 @@ developer_mode = false
 # Note: Must always be a single character.
 prefix = '/'
 
+# The amount of seconds between each cycle of the assistant's primary event loop.
+main_loop_delay = 1
+
+# The amount of seconds between each cycle of the assistant's scheduler loop.
+# The lower the delay, the more accurate the scheduling systems are.
+# However, it may slow down the assistant.
+sched_loop_delay = 1
+
 [engine]
 # Allow multiple response engines to be loaded at once.
 allow_multiple_engines = true

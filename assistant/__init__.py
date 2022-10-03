@@ -1,6 +1,9 @@
 import os
 import logging
+import datetime
 
+from assistant.utils.ticker import Ticker
+from assistant.components.threads import EventLoop, Scheduler
 from assistant.components.interpreter import IntentInterpreter
 from assistant.handlers.command_handler import CommandHandler
 from assistant.handlers.request_handler import RequestHandler
@@ -44,8 +47,21 @@ class Assistant:
 
         self.logger.info("Assistant Initialized")
 
+        self.mainloop = EventLoop(self.config['developer']['main_loop_delay'])
+        self.mainloop.add_function(self.loop)
+
+        self.scheduler = Scheduler(self.config['developer']['sched_loop_delay'])
+
+        self.ticks = 0
+        self.launch_time = datetime.utcnow()
+
+        self.mainloop.start()
+        self.scheduler.start()
+
     def process(self, msg):
         """Pipe user input to the intent interpreter."""
+        
+        self.on_update()
 
         response = self.interpreter.process(msg)
         
@@ -53,5 +69,13 @@ class Assistant:
         self.logger.info(f"{self.name}: {response.content}")
 
         return response.content
+    
+    def loop(self):
+        self.ticks += 1
+        os.system(f"title Friday: Desktop Virtual Assistant ^| Tick {self.ticks}")
+    
+    def on_update(self):
+        pass
+
 
 # assistant.interpreter.handlers['CommandHandler'].register_command = 
