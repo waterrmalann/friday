@@ -5,6 +5,8 @@ from assistant.components.interpreter import IntentInterpreter
 from assistant.handlers.command_handler import CommandHandler
 from assistant.handlers.request_handler import RequestHandler
 
+from assistant.debug.commands import cmd_help, cmd_ping
+
 class Assistant:
     def __init__(self, name, config, log_handler=None):
 
@@ -32,10 +34,13 @@ class Assistant:
         self.interpreter = IntentInterpreter(self)
         # Note: The order in which the handlers are attached is important as some handlers may practically accept anything.
 
-        cmd_handler = CommandHandler(self.interpreter)
-        #cmd_handler.register_command()
-        self.interpreter.attach_handler(CommandHandler(self.interpreter))
-        self.interpreter.attach_handler(RequestHandler(self.interpreter))
+        # Command Handlers
+        self.interpreter.attach_handler(CommandHandler(cmd_help, ('info', 'help')))
+        self.interpreter.attach_handler(CommandHandler(cmd_ping, ('ping', 'latency')))
+        
+        # Request Handler
+        self.interpreter.attach_handler(RequestHandler()) # -> perhaps the engine can be put inside this
+
 
         self.logger.info("Assistant Initialized")
 

@@ -127,7 +127,7 @@ class Skill:
         return confidence
 
     def process(self, message:Message):
-        pass
+        raise NotImplemented
 
     def reset(self):
         pass
