@@ -23,7 +23,7 @@ class Command:
 class CommandHandler(Handler):
     
     def __init__(self, command: callable, aliases: tuple):
-        super().__init__("Command Handler")
+        super().__init__(f"Command Handler: {command.__name__}")
 
         # The command function that's called.
         self.command = command
@@ -35,7 +35,7 @@ class CommandHandler(Handler):
         """Handle the input."""
 
         cmd = Command(message)
-        
+
         try:
             ran = self.command(self.assistant, *cmd.args)
             return Response('OK', str(ran))

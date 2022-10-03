@@ -14,7 +14,7 @@ class IntentInterpreter:
         handler.setup(self)
 
         # Attach a handler to the interpreter.
-        self.handlers[handler.__class__.__name__] = handler
+        self.handlers[handler.name] = handler
         
     
     def process(self, message):
