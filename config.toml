@@ -13,6 +13,7 @@ flavour = "cherry"
 developer_mode = false
 
 # Prefix for commands. '/' by default.
+# Note: Must always be a single character.
 prefix = '/'
 
 [engine]
