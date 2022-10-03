@@ -1,4 +1,4 @@
-from assistant.datatypes.message import Message
+from assistant.datatypes.message import Message, MessageTokens
 from assistant.datatypes.response import Response
 from assistant.processing.sentence_constructor import SentenceConstructor
 from assistant.processing.pattern_expression import PatternExpression
@@ -16,6 +16,7 @@ class Skill_RollDice(SBRE.Skill):
                 {'a', },
                 ("dice", "die")
             ])
+        ]
 
     def process(self, message:Message):
         
