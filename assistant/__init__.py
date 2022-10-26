@@ -1,6 +1,7 @@
 import os
 import logging
 import datetime
+import time
 
 from assistant.utils.ticker import Ticker
 from assistant.components.threads import EventLoop, Scheduler
@@ -15,6 +16,8 @@ class Assistant:
 
         # Name of the assistant (used internally).
         self.name = name
+
+        self.start_time = time.time()
 
         # Base configuration. Usually the config.toml file.
         self.config = config
@@ -70,6 +73,11 @@ class Assistant:
 
         return response.content
     
+    def get_uptime(self):
+        """Returns the number of seconds has it been since the assistant was started."""
+
+        return time.time() - self.start_time
+
     def loop(self):
         self.ticks += 1
         os.system(f"title Friday: Desktop Virtual Assistant ^| Tick {self.ticks}")
