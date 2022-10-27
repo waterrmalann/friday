@@ -1,9 +1,7 @@
 import os
 import logging
-import datetime
 import time
 
-from assistant.utils.ticker import Ticker
 from assistant.components.threads import EventLoop, Scheduler
 from assistant.components.interpreter import IntentInterpreter
 from assistant.handlers.command_handler import CommandHandler
@@ -56,7 +54,6 @@ class Assistant:
         self.scheduler = Scheduler(self.config['developer']['sched_loop_delay'])
 
         self.ticks = 0
-        self.launch_time = datetime.utcnow()
 
         self.mainloop.start()
         self.scheduler.start()
