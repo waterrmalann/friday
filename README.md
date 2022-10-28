@@ -13,6 +13,7 @@ The primary response engine of Friday, SBRE implements python programs written i
 | Coin Toss | Toss a coin and get the outcome. | "Flip a coin" |
 | Dice Roll | Roll a dice and get the outcome. | "Roll a dice" |
 | Date/Time | Get information about date/time. | "What's the time?" |
+| 8ball | Get replies from the magic 8ball. | "Ask 8ball if today will be a good day." |
 
 ## Flow
 
