@@ -7,8 +7,8 @@ from assistant.engines import SBRE
 import random
 
 class Skill_RollDice(SBRE.Skill):
-    def __init__(self, assistant):
-        super().__init__(assistant)
+    def __init__(self, assistant, ctx):
+        super().__init__(assistant, ctx)
 
         self.patterns = [
             PatternExpression([
@@ -57,5 +57,5 @@ class Skill_RollDice(SBRE.Skill):
 
         return Response('OK', out)
 
-def setup(assistant):
-    return Skill_RollDice(assistant)
+def setup(assistant, ctx):
+    return Skill_RollDice(assistant, ctx)

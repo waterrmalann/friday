@@ -6,18 +6,20 @@ from assistant.engines import SBRE
 
 import json
 import random
+import os
 
 class Skill_8ball(SBRE.Skill):
-    def __init__(self, assistant, responses):
-        super().__init__(assistant)
+    def __init__(self, assistant, ctx):
+        super().__init__(assistant, ctx)
 
         self.patterns = [
             PatternExpression([
                 ("8ball", "8-ball", "eight-ball", "eightball")
             ])
         ]
-        
-        self.responses = responses
+
+        with open(os.path.join(self.ctx['root_path'], 'data', 'responses.json')) as f:
+            self.responses = json.load(f)
 
     def process(self, message:Message):
         fortune_type = random.choice(list(self.responses))
@@ -36,7 +38,5 @@ class Skill_8ball(SBRE.Skill):
 
         return Response('OK', out)
 
-def setup(assistant):
-    with open('skills/active/Skill_8ball/data/responses.json') as f:
-        responses = json.load(f)
-    return Skill_8ball(assistant, responses)
+def setup(assistant, ctx):
+    return Skill_8ball(assistant, ctx)
