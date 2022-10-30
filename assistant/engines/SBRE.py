@@ -1,5 +1,6 @@
 import importlib.util
 import os
+import time
 
 #from assistant.components.memory import Memory, WorkingMemory
 
@@ -35,13 +36,20 @@ class SkillBasedResponseEngine:
         return self.process(msg)
     
     # try..except
-    def load_active_skill(self, skill_name, skill_path):
+    def load_active_skill(self, skill_name, skill_path, root_path=None):
         try:
             spec = importlib.util.spec_from_file_location(skill_name, skill_path)
             skill = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(skill)
+            
+            # Contextual information about the skill. Accessible via skill.ctx later.
+            ctx = {
+                'timestamp': time.time(),  # the time the skill was loaded
+                'abs_path': skill_path,  # the absolute path of the skill file
+                'root_path': root_path  # the path of the skill folder
+            }
             #sys.modules["module.name"] = foo
-            self.active_skills[skill_name] = skill.setup(self.assistant)
+            self.active_skills[skill_name] = skill.setup(self.assistant, ctx)
 
             self.log.info(f"Loaded Skill '{skill_name}' from {skill_path}")
         except Exception as ex:
@@ -53,7 +61,7 @@ class SkillBasedResponseEngine:
                 if file.endswith('main.py'):
                     name = subdir[subdir.rindex('\\') + 1:]  # todo: Change for linux
                     path = os.path.join(subdir, file)
-                    self.load_active_skill(name, path)
+                    self.load_active_skill(name, path, subdir)
 
     def process(self, msg:Message):
         # Figure out what skills are triggered by the input.
@@ -93,10 +101,13 @@ class SkillBasedResponseEngine:
             return self.active_skills[matches[0][0]].process(msg)
 
 class Skill:
-    def __init__(self, assistant):
+    def __init__(self, assistant, ctx):
         
         # An instance of the assistant to access components such as memory.
         self.assistant = assistant
+
+        # Contextual information regarding the skill (like its absolute file path for eg).
+        self.ctx = ctx
 
         # PatternExpression items that inputs are supposed to be checked against.
         self.patterns = []
@@ -116,6 +127,10 @@ class Skill:
 
     def _on_skill_unload(self):
         pass
+    
+    def set_path(self, path):
+        """Sets the path of the skill."""
+        self.path = path
 
     def evaluate(self, message:Message):
         """Matches the skill patterns with message."""

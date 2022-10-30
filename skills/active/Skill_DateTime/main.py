@@ -12,8 +12,8 @@ class Skill_DateTime(SBRE.Skill):
         Information regarding current date and time.
     """
 
-    def __init__(self, assistant):
-        super().__init__(assistant)
+    def __init__(self, assistant, ctx):
+        super().__init__(assistant, ctx)
 
         self.patterns = [
             PatternExpression([
@@ -75,5 +75,5 @@ class Skill_DateTime(SBRE.Skill):
 
             return Response('OK', reply.generate(day_name=day_name, month_name=month_name, year=year, day=day))
 
-def setup(assistant):
-    return Skill_DateTime(assistant)
+def setup(assistant, ctx):
+    return Skill_DateTime(assistant, ctx)

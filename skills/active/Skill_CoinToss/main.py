@@ -5,8 +5,8 @@ from assistant.processing.pattern_expression import PatternExpression
 from assistant.engines import SBRE
 
 class Skill_CoinToss(SBRE.Skill):
-    def __init__(self, assistant):
-        super().__init__(assistant)
+    def __init__(self, assistant, ctx):
+        super().__init__(assistant, ctx)
 
         self.patterns = [
             PatternExpression([
@@ -36,5 +36,5 @@ class Skill_CoinToss(SBRE.Skill):
 
         return Response('OK', reply.generate())
 
-def setup(assistant):
-    return Skill_CoinToss(assistant)
+def setup(assistant, ctx):
+    return Skill_CoinToss(assistant, ctx)
